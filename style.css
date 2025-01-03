@@ -9,7 +9,7 @@
 } */
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Bitter", Arial, sans-serif;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -17,6 +17,9 @@ body {
   color: #000;
   background-color: #fff;
   font-smooth: never;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
 }
