@@ -1,7 +1,9 @@
 const editor = document.getElementById('editor');
 const cursor = document.getElementById('custom-cursor');
 const placeholder = document.getElementById('placeholder');
-const storageKey = 'editorContent';
+const contentKey = 'editorContent';
+const fontSizeKey = 'fontSize';
+const cursorSizeKey = 'cursorSize';
 
 let typingTimeout;
 let isTyping = false;
@@ -131,7 +133,7 @@ editor.addEventListener('input', () => {
     editor.appendChild(cursor);
   }
 
-  localStorage.setItem(storageKey, editor.innerHTML);
+  localStorage.setItem(contentKey, editor.innerHTML);
 });
 
 editor.addEventListener('keyup', updateCursor);
@@ -147,7 +149,31 @@ editor.addEventListener('focus', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   // setCursor()
-  const savedContent = localStorage.getItem(storageKey);
+  let savedContent = localStorage.getItem(contentKey);
+  let fontSize = localStorage.getItem(fontSizeKey);
+  let cursorSize = localStorage.getItem(cursorSizeKey);
+
+  if (!fontSize) {
+    // init font size
+    // console.log('no font size or cursor size, storing default values');
+
+    let textFontSize = getComputedStyle(document.documentElement).getPropertyValue("--text-font-size");
+    let textFontSizeValue = parseFloat(textFontSize);
+
+    let cursorLineHeightSize = getComputedStyle(document.documentElement).getPropertyValue("--cursor-line-height");
+    let cursorLineHeightSizeValue = parseFloat(cursorLineHeightSize);
+
+    localStorage.setItem(fontSizeKey, textFontSizeValue);
+    localStorage.setItem(cursorSizeKey, cursorLineHeightSizeValue);
+  } else {
+    // use stored font size
+    // console.log('existing font size, it is', fontSize);
+    // console.log('existing cursor size, it is', cursorSize);
+
+    document.documentElement.style.setProperty('--text-font-size', `${fontSize}px`);
+    document.documentElement.style.setProperty('--cursor-line-height', `${cursorSize}px`);
+  }
+
   // console.log(savedContent);
   if (savedContent && !isContentEmpty(savedContent)) {
     console.log('there is content');
@@ -172,6 +198,8 @@ document.onkeyup = function (e) {
     document.documentElement.style.setProperty('--cursor-line-height', `${cursorLineHeightSizeValue}px`);
 
     updateCursor();
+    localStorage.setItem(fontSizeKey, textFontSizeValue);
+    localStorage.setItem(cursorSizeKey, cursorLineHeightSizeValue);
   } else if (e.ctrlKey && e.which == 189) { // Ctrl + '-'
     let textFontSize = getComputedStyle(document.documentElement).getPropertyValue("--text-font-size");
     let textFontSizeValue = parseFloat(textFontSize);
@@ -184,5 +212,7 @@ document.onkeyup = function (e) {
     document.documentElement.style.setProperty('--cursor-line-height', `${cursorLineHeightSizeValue}px`);
 
     updateCursor();
+    localStorage.setItem(fontSizeKey, textFontSizeValue);
+    localStorage.setItem(cursorSizeKey, cursorLineHeightSizeValue);
   }
 };
