@@ -126,7 +126,7 @@ editor.addEventListener('input', () => {
       cursor.style.display = 'block';
       updateCursor();
     }
-  }, 350);
+  }, 450);
 
   if (!document.body.contains(cursor)) {
     console.log('reattaching');
