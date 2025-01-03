@@ -176,11 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // console.log(savedContent);
   if (savedContent && !isContentEmpty(savedContent)) {
-    console.log('there is content');
+    // console.log('there is content');
     placeholder.innerHTML = '';
     editor.innerHTML = savedContent;
   } else {
-    console.log('there is no content');
+    // console.log('there is no content');
     placeholder.textContent = 'Start typing...';
   }
 })
@@ -214,15 +214,19 @@ document.onkeyup = function (e) {
     updateCursor();
     localStorage.setItem(fontSizeKey, textFontSizeValue);
     localStorage.setItem(cursorSizeKey, cursorLineHeightSizeValue);
-  } else if (e.ctrlKey && e.key === "f") {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.error(`Failed to enter fullscreen mode: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen().catch((err) => {
-        console.error(`Failed to exit fullscreen mode: ${err.message}`);
-      });
-    }
   }
 };
+
+document.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.error(`Failed to enter fullscreen mode: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen().catch((err) => {
+      console.error(`Failed to exit fullscreen mode: ${err.message}`);
+    });
+  }
+});
