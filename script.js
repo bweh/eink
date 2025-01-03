@@ -71,7 +71,7 @@ function activateCursor() {
 
   if (!isTyping) {
     cursor.style.display = 'block';
-    moveCursor();
+    updateCursor();
   }
 }
 
@@ -80,7 +80,7 @@ function deactivateCursor() {
   cursor.style.display = 'none';
 }
 
-function moveCursor() {
+function updateCursor() {
   let cursorHeight = getComputedStyle(document.documentElement).getPropertyValue("--cursor-line-height");
   let lineHeight = parseFloat(cursorHeight);
 
@@ -99,7 +99,7 @@ function moveCursor() {
     const row = pos.row;
     const col = pos.column;
 
-    console.log(rect);
+    // console.log(rect);
     cursor.style.left = `${(col === 0) ? 10 : rect.left}px`;
     cursor.style.top = `${10 + lineHeight * (row)}px`;
     // console.log(selection);
@@ -122,7 +122,7 @@ editor.addEventListener('input', () => {
       deactivateCursor();
     } else {
       cursor.style.display = 'block';
-      moveCursor();
+      updateCursor();
     }
   }, 350);
 
@@ -134,8 +134,8 @@ editor.addEventListener('input', () => {
   localStorage.setItem(storageKey, editor.innerHTML);
 });
 
-editor.addEventListener('keyup', moveCursor);
-editor.addEventListener('click', moveCursor);
+editor.addEventListener('keyup', updateCursor);
+editor.addEventListener('click', updateCursor);
 
 editor.addEventListener('focus', () => {
   // console.log('editor is focused!');
@@ -159,22 +159,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-// document.onkeyup = function (e) {
-//   if (e.ctrlKey && e.which == 187) {
-//     // alert("Increase font size");
-//     let currentSize = getComputedStyle(document.documentElement).getPropertyValue("--size");
-//     let sizeValue = parseFloat(currentSize);
-//     sizeValue += 1;
+document.onkeyup = function (e) {
+  if (e.ctrlKey && e.which == 187) { // Ctrl + '+'
+    let textFontSize = getComputedStyle(document.documentElement).getPropertyValue("--text-font-size");
+    let textFontSizeValue = parseFloat(textFontSize);
+    textFontSizeValue += 1;
+    document.documentElement.style.setProperty('--text-font-size', `${textFontSizeValue}px`);
 
-//     document.documentElement.style.setProperty('--size', `${sizeValue}px`);
-//     console.log(getComputedStyle(document.documentElement).getPropertyValue("--size"));
-//   } else if (e.ctrlKey && e.which == 189) {
-//     // alert("Decrease font size");
-//     let currentSize = getComputedStyle(document.documentElement).getPropertyValue("--size");
-//     let sizeValue = parseFloat(currentSize);
-//     sizeValue -= 1;
+    let cursorLineHeightSize = getComputedStyle(document.documentElement).getPropertyValue("--cursor-line-height");
+    let cursorLineHeightSizeValue = parseFloat(cursorLineHeightSize);
+    cursorLineHeightSizeValue += 1;
+    document.documentElement.style.setProperty('--cursor-line-height', `${cursorLineHeightSizeValue}px`);
 
-//     document.documentElement.style.setProperty('--size', `${sizeValue}px`);
-//     console.log(getComputedStyle(document.documentElement).getPropertyValue("--size"));
-//   }
-// };
+    updateCursor();
+  } else if (e.ctrlKey && e.which == 189) { // Ctrl + '-'
+    let textFontSize = getComputedStyle(document.documentElement).getPropertyValue("--text-font-size");
+    let textFontSizeValue = parseFloat(textFontSize);
+    textFontSizeValue -= 1;
+    document.documentElement.style.setProperty('--text-font-size', `${textFontSizeValue}px`);
+
+    let cursorLineHeightSize = getComputedStyle(document.documentElement).getPropertyValue("--cursor-line-height");
+    let cursorLineHeightSizeValue = parseFloat(cursorLineHeightSize);
+    cursorLineHeightSizeValue -= 1;
+    document.documentElement.style.setProperty('--cursor-line-height', `${cursorLineHeightSizeValue}px`);
+
+    updateCursor();
+  }
+};
