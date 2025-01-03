@@ -1,0 +1,55 @@
+:root {
+  --text-font-size: 40px;
+  --cursor-line-height: 43px;
+  --cursor-width: 2px;
+}
+
+/* * {
+  outline: 1px solid red;
+} */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  color: #000;
+  background-color: #fff;
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#editor {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: var(--text-font-size);
+  line-height: var(--cursor-line-height);
+  outline: none;
+  overflow: hidden;
+  caret-color: transparent;
+  position: relative;
+  letter-spacing: 0.03em;
+}
+
+#custom-cursor {
+  position: absolute;
+  background-color: rgb(117, 117, 117);
+  display: none;
+  pointer-events: none;
+  width: var(--cursor-width);
+  height: var(--cursor-line-height);
+  /* outline: 3px solid red; */
+}
+
+#placeholder {
+  color: gray;
+  pointer-events: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: var(--text-font-size);
+  letter-spacing: 0.03em;
+}
